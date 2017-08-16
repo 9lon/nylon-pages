@@ -2,6 +2,7 @@
   "name": "nylon-pages",
   "description": "Router Component.",
   "main": "nylon-pages.html",
+  "version": "0.0.1",
   "dependencies": {
     "polymer": "Polymer/polymer#1.9 - 2",
     "page": "^1.7.1"
