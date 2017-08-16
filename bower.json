@@ -1,6 +1,7 @@
 {
   "name": "nylon-pages",
   "description": "Router Component.",
+  "license":"Apache-2.0",
   "main": "nylon-pages.html",
   "version": "0.0.1",
   "dependencies": {
