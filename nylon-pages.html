@@ -1,0 +1,125 @@
+<link rel="import" href="../polymer/polymer.html">
+<script src="../page/page.js"></script>
+
+<dom-module id="nylon-pages">
+  <template>
+    <style>
+       :host {
+        display: block;
+      }
+
+       :host> ::slotted(:not(.iron-selected)) {
+        display: none !important;
+      }
+    </style>
+    <slot></slot>
+  </template>
+
+  <script>
+    /**
+     * `nylon-pages`
+     * Router Component.
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+
+    Polymer({
+      is: 'nylon-pages',
+      properties: {
+        attrForSelected: {
+          type: String,
+          value: 'name'
+        },
+        attrForPath: {
+          type: String,
+          value: 'path'
+        },
+        selectedAttribute: {
+          type: String,
+          value: 'visible'
+        },
+        selected: {
+          type: String,
+          notify: true
+        },
+        role: {
+          type: Array,
+          value: [],
+          notify: true
+        }
+      },
+      ready: function () {
+
+        this._initRoute()
+
+      },
+      _initRoute: function () {
+
+        for (let i = 0; i < this.children.length; i++) {
+
+          var preRole = { page: this.children[i].localName }
+          //console.log(this.children[i],this.children[i].getAttribute('role'))
+          if (this.children[i].getAttribute('role') != null) {
+            preRole.role = this.children[i].getAttribute('role')
+          }
+          this.push('role', preRole)
+
+          page(this.children[i].getAttribute(this.attrForPath), (ctx, next) => {
+
+            //console.log(ctx)
+            //console.log(this.children[i])
+
+            var detail = {
+              ctx,
+              next,
+              page,
+              path: ctx.path,
+              redirect: (path) => {
+                page.redirect(path)
+              },
+              element: this.children[i],
+              selected: this.children[i].getAttribute(this.attrForSelected),
+              params: ctx.params,
+              index: i,
+              pass: () => {
+                //console.log('ddd')
+                this._reflectChildrenAttribute(i)
+                this.selected = this.children[i].getAttribute(this.attrForSelected)
+                this.children[i]._params = ctx.params
+                this.async(function () {
+                  this.fire('nylon-pages-changed', detail)
+                }, 1)
+
+              }
+            }
+
+            //console.log(this.children[i].getAttribute('role'))
+
+            if (this.children[i].getAttribute('role') != null) {
+              detail.role = this.children[i].getAttribute('role')
+              this.async(() => {
+                this.fire('nylon-pages-role', detail)
+              }, 1)
+            } else {
+              detail.pass()
+            }
+
+          });
+        }
+        page()
+      },
+      _reflectChildrenAttribute: function (index) {
+        // console.log(this.children[index].localName)
+        for (let i = 0; i < this.children.length; i++) {
+          this.children[i].removeAttribute(this.selectedAttribute)
+          this.children[i].setAttribute("class", "x-scope " + this.children[index].localName + "-0")
+        }
+
+        this.children[index].setAttribute(this.selectedAttribute, true)
+        this.children[index].setAttribute("class", "x-scope " + this.children[index].localName + "-0 " + "iron-selected")
+      }
+    });
+  </script>
+</dom-module>
