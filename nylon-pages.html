@@ -119,6 +119,9 @@
 
         this.children[index].setAttribute(this.selectedAttribute, true)
         this.children[index].setAttribute("class", "x-scope " + this.children[index].localName + "-0 " + "iron-selected")
+      },
+      redirect: function(path){
+        page(path)
       }
     });
   </script>
