@@ -69,7 +69,7 @@ How to check role and redirect page.
         <page-index path="/"></page-index>
         <page-home path="/home"></page-home>
         <page-topic path="/topic/:id" role></page-topic>
-        <page-topic path="/user/select/:id" role="admin"></page-topic>
+        <page-topic-select path="/user/select/:id" role="admin"></page-topic-select>
         <page-401 path="/401"></page-404>
         <page-403 path="/403"></page-403>
         <page-404 path="*"></page-404>
@@ -99,7 +99,7 @@ How to check role and redirect page. but `no change path`
         <page-index path="/"></page-index>
         <page-home path="/home"></page-home>
         <page-topic path="/topic/:id" role></page-topic>
-        <page-topic path="/user/select/:id" role="admin"></page-topic>
+        <page-topic-select path="/user/select/:id" role="admin"></page-topic-select>
         <page-401 path="*"></page-404>
         <page-403 path="*"></page-403>
         <page-404 path="*"></page-404>
