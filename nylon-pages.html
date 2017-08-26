@@ -51,25 +51,46 @@
         }
       },
       ready: function () {
-
-        this._initRoute()
-
+        if(this.getAttribute('manual')==null){
+          this._initRoute()
+        }
       },
-      _initRoute: function () {
+      start(option){
+        //console.log(option)
+       this._initRoute(option)
+      },
+      _initRoute: function (option) {
 
+        var option = option || {}
+        
         for (let i = 0; i < this.children.length; i++) {
 
+
           var preRole = { page: this.children[i].localName }
-          //console.log(this.children[i],this.children[i].getAttribute('role'))
           if (this.children[i].getAttribute('role') != null) {
             preRole.role = this.children[i].getAttribute('role')
           }
           this.push('role', preRole)
 
-          page(this.children[i].getAttribute(this.attrForPath), (ctx, next) => {
 
-            //console.log(ctx)
-            //console.log(this.children[i])
+          //join path
+          var rootPattern = option.rootPattern || ''
+
+          if(rootPattern!=''){
+            if(rootPattern[rootPattern.length-1]=='/'){
+              rootPattern = rootPattern.substring(0,rootPattern.length-1)
+            }
+          }
+
+          this.rootPattern = rootPattern
+
+          var elementPath = this.children[i].getAttribute(this.attrForPath)
+          if(elementPath[0]!='/'){
+            elementPath = '/'+elementPath
+          }
+          
+          //router
+          page(rootPattern+elementPath, (ctx, next) => {
 
             var detail = {
               ctx,
@@ -77,14 +98,17 @@
               page,
               path: ctx.path,
               redirect: (path) => {
-                page.redirect(path)
+                if(path[0]!='/'){
+                  path = '/'+path
+                }
+                page.redirect(rootPattern+path)
               },
               element: this.children[i],
               selected: this.children[i].getAttribute(this.attrForSelected),
               params: ctx.params,
               index: i,
               pass: () => {
-                //console.log('ddd')
+                //if pass,It wii be show element.
                 this._reflectChildrenAttribute(i)
                 this.selected = this.children[i].getAttribute(this.attrForSelected)
                 this.children[i]._params = ctx.params
@@ -92,10 +116,22 @@
                   this.fire('nylon-pages-changed', detail)
                 }, 1)
 
+              },
+              active:()=>{
+                //if want to call function nylonPagesActive and nylonPagesUnActive of children element.
+                if(this.currentPage){
+                  if(this.currentPage.nylonPagesUnActive){
+                    this.currentPage.nylonPagesUnActive(detail)
+                  }
+                }
+                this.currentPage = detail.element
+                if(this.currentPage.nylonPagesActive){
+                  this.currentPage.nylonPagesActive(detail)
+                }
+
               }
             }
 
-            //console.log(this.children[i].getAttribute('role'))
 
             if (this.children[i].getAttribute('role') != null) {
               detail.role = this.children[i].getAttribute('role')
@@ -121,7 +157,11 @@
         this.children[index].setAttribute("class", "x-scope " + this.children[index].localName + "-0 " + "iron-selected")
       },
       redirect: function(path){
-        page(path)
+        //console.log(path[0]=='/')
+        if(path[0]!='/'){
+          path = '/'+path
+        }
+        page.redirect(this.rootPattern+path)
       }
     });
   </script>
