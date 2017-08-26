@@ -1,0 +1,46 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+<link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+<link rel="import" href="../nylon-pages.html">
+
+<dom-module id="my-test">
+    <template>
+        <custom-style>
+            <style is="custom-style" include="demo-pages-shared-styles"></style>
+        </custom-style>
+
+        <div class="vertical-section-container centered">
+            <h3>Basic nylon-pages </h3>
+            <!-- <demo-snippet>
+                <template>
+                    
+                </template>
+            </demo-snippet> -->
+            <div>
+                <button on-tap="changePage">change</button>
+                <a href="/components/nylon-pages/demo/">change</a>
+            </div>
+            <nylon-pages id="router" on-nylon-pages-changed="_pageChanged">
+                <div path="/components/nylon-pages/demo/">index</div>
+                <div path="/components/nylon-pages/demo/x">x</div>
+                <div path="*">all</div>
+            </nylon-pages>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'my-test',
+            ready:function(){
+                //this.$.router.addEventListener('nylon-pages-changed',this._pageChanged)
+            },
+            changePage:function(){
+                console.log('ok')
+                this.$.router.redirect('/components/nylon-pages/demo/x')
+            },
+            _pageChanged:function(){
+                console.log('on-nylon-pages-changed')
+            }
+        });
+    </script>
+</dom-module>
