@@ -57,9 +57,19 @@ How to get params on `children element`.
 ```
 
 How to change page on `polymer`.
+```html
+    <button on-click="simpleFunc">change</button>
+    <a href="/topic/1">link</a>
+    <nylon-pages id="router" on-nylon-pages-changed="_pageChanged">
+        <page-index path="/"></page-index>
+        <page-home path="/home"></page-home>
+        <page-topic path="/topic/:id"></page-topic>
+        <page-404 path="*"></page-404>
+    </nylon-pages>
+```
 ```js
     simpleFunc(){
-        page('/topic/1')
+        this.$.router.redirect('/topic/1')
     }
 ```
 
