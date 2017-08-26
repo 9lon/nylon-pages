@@ -1,6 +1,7 @@
 # \<nylon-pages\>
 
-`nylon-pages` is an router element for polymer. 
+`nylon-pages` is an router element for polymer.
+Use page.js dependency 
 
 Here is a basic example.
 ```html
@@ -136,25 +137,3 @@ How to check role and redirect page. but `no change path`
         }
     }
 ```
-
-
-<!-- 
-
-
-## Install the Polymer-CLI
-
-First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your element locally.
-
-## Viewing Your Element
-
-```
-$ polymer serve
-```
-
-## Running Tests
-
-```
-$ polymer test
-```
-
-Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally. -->
