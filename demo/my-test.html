@@ -24,9 +24,9 @@
                 <a href="/components/nylon-pages/demo/">change</a>
                 <a href="/components/nylon-pages/demo/s">404</a>
             </div>
-            <nylon-pages id="router" on-nylon-pages-changed="_pageChanged" manual>
+            <nylon-pages id="router" on-nylon-pages-changed="_pageChanged" on-nylon-pages-rule="_checkRule" manual>
                 <my-page1 path="/"></my-page1>
-                <my-page2 path="/x"></my-page2>
+                <my-page2 path="/x" rule></my-page2>
                 <div path="/*">404</div>
             </nylon-pages>
         </div>
@@ -43,6 +43,11 @@
             },
             changePage:function(){
                 this.$.router.redirect('/x')
+            },
+            _checkRule(e){
+                var np = e.detail
+                console.log('rule')
+                np.pass()
             },
             _pageChanged:function(e){
                 var resolvedPageUrl = this.resolveUrl(e.detail.element.localName + '.html')

@@ -104,31 +104,31 @@ How to check role and redirect page.
     }
 ```
 
-How to check role and redirect page. but `no change path`
+How to check rule and redirect page. but `no change path`
 ```html
-    <nylon-pages on-nylon-pages-role="_checkRole">
+    <nylon-pages on-nylon-pages-rule="_checkRule">
         <page-index path="/"></page-index>
         <page-home path="/home"></page-home>
-        <page-topic path="/topic/:id" role></page-topic>
-        <page-topic-select path="/user/select/:id" role="admin"></page-topic-select>
+        <page-topic path="/topic/:id" rule></page-topic>
+        <page-topic-select path="/user/select/:id" rule="admin"></page-topic-select>
         <page-401 path="*"></page-404>
         <page-403 path="*"></page-403>
         <page-404 path="*"></page-404>
     </nylon-pages>
 ```
 ```js
-    _checkRole(e){
+    _checkRule(e){
         var np = e.detail
 
         var element = np.element
         var elementName = element.localName;
-        var roleValue = element.getAttribute('role')
+        var ruleValue = element.getAttribute('rule')
 
         if(np.ctx.gotoPage){
             if(elementName=='page-403' && np.ctx.gotoPage=='403')
                 np.pass()
         }else{
-            var pass = await _checkRoleAnotherFun(...)
+            var pass = await _checkRuleAnotherFun(...)
             if(pass){
                 np.pass()
             }else{

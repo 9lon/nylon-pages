@@ -44,7 +44,7 @@
           type: String,
           notify: true
         },
-        role: {
+        rule: {
           type: Array,
           value: [],
           notify: true
@@ -66,11 +66,11 @@
         for (let i = 0; i < this.children.length; i++) {
 
 
-          var preRole = { page: this.children[i].localName }
-          if (this.children[i].getAttribute('role') != null) {
-            preRole.role = this.children[i].getAttribute('role')
+          var preRule = { page: this.children[i].localName }
+          if (this.children[i].getAttribute('rule') != null) {
+            preRule.rule = this.children[i].getAttribute('rule')
           }
-          this.push('role', preRole)
+          this.push('rule', preRule)
 
 
           //join path
@@ -133,10 +133,10 @@
             }
 
 
-            if (this.children[i].getAttribute('role') != null) {
-              detail.role = this.children[i].getAttribute('role')
+            if (this.children[i].getAttribute('rule') != null) {
+              detail.rule = this.children[i].getAttribute('rule')
               this.async(() => {
-                this.fire('nylon-pages-role', detail)
+                this.fire('nylon-pages-rule', detail)
               }, 1)
             } else {
               detail.pass()
@@ -157,11 +157,13 @@
         this.children[index].setAttribute("class", "x-scope " + this.children[index].localName + "-0 " + "iron-selected")
       },
       redirect: function(path){
-        //console.log(path[0]=='/')
         if(path[0]!='/'){
           path = '/'+path
         }
-        page.redirect(this.rootPattern+path)
+        if(this.rootPattern)
+          path = this.rootPattern + path
+
+        page.redirect(path)
       }
     });
   </script>
