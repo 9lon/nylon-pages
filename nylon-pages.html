@@ -61,6 +61,8 @@
       },
       _initRoute: function (option) {
 
+        
+
         var option = option || {}
         
         for (let i = 0; i < this.children.length; i++) {
@@ -144,7 +146,8 @@
 
           });
         }
-        page()
+        page.start()
+        
       },
       _reflectChildrenAttribute: function (index) {
         // console.log(this.children[index].localName)
@@ -163,7 +166,7 @@
         if(this.rootPattern)
           path = this.rootPattern + path
 
-        page.redirect(path)
+        page(path)
       }
     });
   </script>
