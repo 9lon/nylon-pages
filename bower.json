@@ -3,7 +3,7 @@
   "description": "Router Component.",
   "license":"Apache-2.0",
   "main": "nylon-pages.html",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "dependencies": {
     "polymer": "Polymer/polymer#1.9 - 2",
     "page": "^1.7.1"
