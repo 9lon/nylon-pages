@@ -51,20 +51,20 @@
         }
       },
       ready: function () {
-        if(this.getAttribute('manual')==null){
+        if (this.getAttribute('manual') == null) {
           this._initRoute()
         }
       },
-      start(option){
+      start(option) {
         //console.log(option)
-       this._initRoute(option)
+        this._initRoute(option)
       },
       _initRoute: function (option) {
 
-        
+
 
         var option = option || {}
-        
+
         for (let i = 0; i < this.children.length; i++) {
 
 
@@ -78,21 +78,21 @@
           //join path
           var rootPattern = option.rootPattern || ''
 
-          if(rootPattern!=''){
-            if(rootPattern[rootPattern.length-1]=='/'){
-              rootPattern = rootPattern.substring(0,rootPattern.length-1)
+          if (rootPattern != '') {
+            if (rootPattern[rootPattern.length - 1] == '/') {
+              rootPattern = rootPattern.substring(0, rootPattern.length - 1)
             }
           }
 
           this.rootPattern = rootPattern
 
           var elementPath = this.children[i].getAttribute(this.attrForPath)
-          if(elementPath[0]!='/'){
-            elementPath = '/'+elementPath
+          if (elementPath[0] != '/') {
+            elementPath = '/' + elementPath
           }
-          
+
           //router
-          page(rootPattern+elementPath, (ctx, next) => {
+          page(rootPattern + elementPath, (ctx, next) => {
 
             var detail = {
               ctx,
@@ -100,10 +100,10 @@
               page,
               path: ctx.path,
               redirect: (path) => {
-                if(path[0]!='/'){
-                  path = '/'+path
+                if (path[0] != '/') {
+                  path = '/' + path
                 }
-                page.redirect(rootPattern+path)
+                page.redirect(rootPattern + path)
               },
               element: this.children[i],
               selected: this.children[i].getAttribute(this.attrForSelected),
@@ -113,21 +113,34 @@
                 //if pass,It wii be show element.
                 this._reflectChildrenAttribute(i)
                 this.selected = this.children[i].getAttribute(this.attrForSelected)
-                this.children[i]._params = ctx.params
+
+                function getUrlVars(url) {
+                  var vars = {}, hash;
+                  if (!(url.indexOf('?') == -1 && url.indexOf('&') == -1)) {
+                    var hashes = url.slice(url.indexOf('?') + 1).split('&');
+
+                    for (var i = 0; i < hashes.length; i++) {
+                      hash = hashes[i].split('=');
+                      vars[hash[0]] = hash[1];
+                    }
+                  }
+                  return vars;
+                }
+                this.children[i]._params = Object.assign({}, ctx.params, getUrlVars(ctx.path))
                 this.async(function () {
                   this.fire('nylon-pages-changed', detail)
                 }, 1)
 
               },
-              active:()=>{
+              active: () => {
                 //if want to call function nylonPagesActive and nylonPagesUnActive of children element.
-                if(this.currentPage){
-                  if(this.currentPage.nylonPagesUnActive){
+                if (this.currentPage) {
+                  if (this.currentPage.nylonPagesUnActive) {
                     this.currentPage.nylonPagesUnActive(detail)
                   }
                 }
                 this.currentPage = detail.element
-                if(this.currentPage.nylonPagesActive){
+                if (this.currentPage.nylonPagesActive) {
                   this.currentPage.nylonPagesActive(detail)
                 }
 
@@ -147,7 +160,7 @@
           });
         }
         page.start()
-        
+
       },
       _reflectChildrenAttribute: function (index) {
         // console.log(this.children[index].localName)
@@ -159,11 +172,11 @@
         this.children[index].setAttribute(this.selectedAttribute, true)
         this.children[index].setAttribute("class", "x-scope " + this.children[index].localName + "-0 " + "iron-selected")
       },
-      redirect: function(path){
-        if(path[0]!='/'){
-          path = '/'+path
+      redirect: function (path) {
+        if (path[0] != '/') {
+          path = '/' + path
         }
-        if(this.rootPattern)
+        if (this.rootPattern)
           path = this.rootPattern + path
 
         page(path)
