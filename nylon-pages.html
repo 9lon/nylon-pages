@@ -127,6 +127,7 @@
                   return vars;
                 }
                 this.children[i]._params = Object.assign({}, ctx.params, getUrlVars(ctx.path))
+                this.children[i]._path = ctx.path.split('?')[0]
                 this.async(function () {
                   this.fire('nylon-pages-changed', detail)
                 }, 1)
