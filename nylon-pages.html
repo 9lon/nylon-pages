@@ -4,11 +4,11 @@
 <dom-module id="nylon-pages">
   <template>
     <style>
-       :host {
+      :host {
         display: block;
       }
 
-       :host> ::slotted(:not(.iron-selected)) {
+      :host> ::slotted(:not(.iron-selected)) {
         display: none !important;
       }
     </style>
@@ -51,6 +51,23 @@
         }
       },
       ready: function () {
+
+
+        document.body.addEventListener('click', e => {
+
+          if ((e.button !== 0) ||
+            (e.metaKey || e.ctrlKey)) {
+            return;
+          }
+
+          let anchor = e.composedPath().filter(n => n.localName == 'a')[0];
+          if (anchor && anchor.href.indexOf(origin) === 0) {
+            e.preventDefault();
+            page(anchor.getAttribute('href'))
+          }
+
+        });
+
         if (this.getAttribute('manual') == null) {
           this._initRoute()
         }
